@@ -29,4 +29,20 @@ class MongoDatabase(AbstractSalaryDatabase):
 
     @staticmethod
     def _get_group_time_query(column: str, _from: dt, to: dt) -> dict:
-        return {column: {"gte": _from, "$lt": to}}
+        return {column: {"$gte": _from, "$lt": to}}
+
+
+if __name__ == '__main__':
+
+    import asyncio
+
+    async def check_mongo(collection):
+        result = collection.find({})
+        async for _ in result:
+            print('Mongo works')
+            break
+
+    db = MongoDatabase()
+    asyncio.run(check_mongo(db.collection))
+
+
