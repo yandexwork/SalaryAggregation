@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '2701:27017'
+    volumes:
+      - db_data:/data/db
+    env_file:
+      - .env
+
+  mongo-seed:
+    build: ./mongo
+    environment:
+      - DATABASE_URI=$DATABASE_URI
+      - USERNAME=$MONGO_INITDB_ROOT_USERNAME
+      - PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+    depends_on:
+      - mongodb
+
+volumes:
+  db_data:
