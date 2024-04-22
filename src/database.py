@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Iterable
+from typing import Iterable, AsyncGenerator, AsyncIterable
 from datetime import datetime as dt
 
 from async_pymongo import AsyncClient, AsyncDatabase, AsyncCollection, AsyncCursor
 
 from config import settings
+from models import Salary
 
 
 class AbstractSalaryDatabase(ABC):
@@ -23,9 +24,11 @@ class MongoDatabase(AbstractSalaryDatabase):
         self.database: AsyncDatabase = self.mongo_client[settings.mongo.database]
         self.collection: AsyncCollection = self.database[settings.mongo.collection]
 
-    def get_salaries(self, _from: dt, to: dt) -> AsyncCursor:
+    async def get_salaries(self, _from: dt, to: dt) -> AsyncGenerator[Salary, None]:
         query = self._get_group_time_query(self.DATETIME_COLUMN, _from, to)
-        return self.collection.find(query)
+        salaries = self.collection.find(query)
+        async for salary in salaries:
+            yield Salary(**salary)
 
     @staticmethod
     def _get_group_time_query(column: str, _from: dt, to: dt) -> dict:
