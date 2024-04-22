@@ -14,6 +14,7 @@ services:
     build: ./mongo
     environment:
       - DATABASE_URI=$DATABASE_URI
+      - COLLECTION=$MONGO_INITDB_COLLECTION
       - USERNAME=$MONGO_INITDB_ROOT_USERNAME
       - PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
     depends_on:
