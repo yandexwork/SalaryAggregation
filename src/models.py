@@ -27,7 +27,7 @@ class Response:
         self.values = []
         self.labels = []
 
-    def add(self, label: str, value: str) -> None:
+    def add(self, label: str, value: int) -> None:
         self.labels.append(label)
         self.values.append(value)
 
