@@ -19,7 +19,7 @@ class MongoDatabase(AbstractSalaryDatabase):
     DATETIME_COLUMN = 'dt'
 
     def __init__(self):
-        self.mongo_client: AsyncClient = AsyncClient(settings.mongo.uri)
+        self.mongo_client: AsyncClient = AsyncClient(settings.mongo_uri)
         self.database: AsyncDatabase = self.mongo_client[settings.mongo.database]
         self.collection: AsyncCollection = self.database[settings.mongo.collection]
 
